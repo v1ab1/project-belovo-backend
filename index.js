@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-async function main() {
+async function main(name) {
     let testAccount = await nodemailer.createTestAccount();
     let transporter = nodemailer.createTransport({
         host: 'smtp.zoho.com',
@@ -22,9 +22,13 @@ async function main() {
     let info = await transporter.sendMail({
       from: 'museum2022@zohomail.com', // sender address
       to: "museum2022@rambler.ru", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello worldcdsfcsfaascsa?", // plain text body
-      html: "<b>Hello world?</b>", 
+      subject: "Письмо солдатам", // Subject line
+      text: "Картинка", // plain text body
+      html: `<img src="./media/${name}.png" alt=""/>`, 
+      attachments: [{   // stream as an attachment
+        filename: `${name}.png`,
+        path: `./media/${name}.png`
+      }]
     });
 }
 
@@ -35,7 +39,7 @@ app.get('/', (req, res) => {
 app.post("/send", (req, res) => {
     const name = (Math.random() + 1).toString(36).substring(7);
     ImageDataURI.outputFile(req.body.dataURL, `./media/${name}.png`);
-    main().catch(console.error);
+    main(name).catch(console.error);
     res.json({
         "success": true
     });
