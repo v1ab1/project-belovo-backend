@@ -11,21 +11,21 @@ app.use(cors());
 async function main(name) {
     let testAccount = await nodemailer.createTestAccount();
     let transporter = nodemailer.createTransport({
-        host: 'smtp.zoho.com',
-        port: 465,
-        secure: true, //ssl
+        host: 'email host', //choose email host
+        port: 465, //choose port
+        secure: true, //ssl or false
         auth: {
-            user: "museum2022@zohomail.com",
-            pass: "Z6f7FKBm0EMi"
+            user: "sender email", //sender address
+            pass: "email password" //password
         }
     });
     let info = await transporter.sendMail({
-      from: 'museum2022@zohomail.com', // sender address
-      to: "museum2022@rambler.ru", // list of receivers
-      subject: "Письмо солдатам", // Subject line
-      text: "Картинка", // plain text body
+      from: '*sender email*', // sender address
+      to: "reciever email", // list of receivers
+      subject: "Письмо солдатам",
+      text: "Картинка",
       html: `<img src="./media/${name}.png" alt=""/>`, 
-      attachments: [{   // stream as an attachment
+      attachments: [{
         filename: `${name}.png`,
         path: `./media/${name}.png`
       }]
